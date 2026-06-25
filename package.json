@@ -1,0 +1,11 @@
+{
+  "name": "modevofits-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Modevofits storefront + admin on Vercel (serverless + Upstash Redis)",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
