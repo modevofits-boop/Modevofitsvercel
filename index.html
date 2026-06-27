@@ -228,6 +228,15 @@ footer{background:#161513;color:#EDEBE5;padding-top:80px}
 .pdp .qtyrow button{width:46px;height:52px;font-size:16px}
 .pdp .qtyrow span{min-width:34px;font-size:14px}
 .pdp__stock{font-family:"Jost",sans-serif;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:18px}
+.sizeguide{margin-top:22px;border-top:1px solid var(--line)}
+.sizeguide summary{cursor:pointer;font-family:"Jost",sans-serif;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mid);padding:16px 0;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.sizeguide summary::-webkit-details-marker{display:none}
+.sizeguide summary::after{content:"+";color:var(--ink-soft);font-size:14px}
+.sizeguide[open] summary::after{content:"−"}
+.sizeguide table{width:100%;border-collapse:collapse;margin:2px 0 18px}
+.sizeguide th,.sizeguide td{font-family:"Jost",sans-serif;font-size:12px;letter-spacing:.03em;text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);color:var(--ink-mid)}
+.sizeguide th{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.sizeguide tr:last-child td{border-bottom:none}
 .pdp__spec{margin-top:42px;border-top:1px solid var(--line-2)}
 
 /* generic content pages */
@@ -385,6 +394,8 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .swatch
   <symbol id="tee" viewBox="0 0 200 220"><path d="M62,38 L82,28 Q100,44 118,28 L138,38 L176,72 L156,98 L140,84 L140,196 Q100,202 60,196 L60,84 L44,98 L24,72 Z"/></symbol>
   <symbol id="polo" viewBox="0 0 200 220"><path d="M64,40 L82,30 L88,42 L100,52 L112,42 L118,30 L136,40 L174,74 L155,99 L140,86 L140,196 Q100,202 60,196 L60,86 L45,99 L26,74 Z"/><path d="M82,30 L100,52 L88,58 L80,44 Z M118,30 L100,52 L112,58 L120,44 Z" opacity=".34"/><rect x="96" y="52" width="8" height="42" rx="2" opacity=".34"/></symbol>
   <symbol id="trouser" viewBox="0 0 200 220"><path d="M66,30 L134,30 L133,58 L116,206 L101,206 L100,104 L99,206 L84,206 L67,58 Z"/><rect x="66" y="30" width="68" height="9" opacity=".32"/></symbol>
+  <symbol id="hoodie" viewBox="0 0 200 220"><path d="M62,48 L82,38 Q100,54 118,38 L138,48 L176,82 L156,108 L140,94 L140,196 Q100,202 60,196 L60,94 L44,108 L24,82 Z"/><path d="M82,38 Q100,70 118,38 Q116,22 100,20 Q84,22 82,38 Z" opacity=".3"/><path d="M76,118 H124 V148 Q100,156 76,148 Z" opacity=".26"/></symbol>
+  <symbol id="jacket" viewBox="0 0 200 220"><path d="M62,40 L82,30 L100,40 L118,30 L138,40 L176,74 L156,100 L140,86 L140,196 L60,196 L60,86 L44,100 L24,74 Z"/><rect x="98" y="40" width="4" height="156" opacity=".3"/></symbol>
 </svg>
 
 <div class="announce"><p id="announce"></p></div>
@@ -446,6 +457,8 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor .swatch
 "use strict";
 /* ============ data ============ */
 let SETTINGS = { storeName:"Modevofits", freeShippingThreshold:4000, expressFee:350, announcement:"Complimentary delivery over ₨ 4,000 — nationwide" };
+let CATEGORIES = [];
+const KNOWN_SHAPES = ["tee","polo","trouser","hoodie","jacket"];
 const C = { BLACK:{name:"Black",hex:"#1B1A17"}, STONE:{name:"Stone",hex:"#A9A29A"}, CREAM:{name:"Cream",hex:"#E2DAC8"}, CLAY:{name:"Desert Clay",hex:"#A98A72"}, IVORY:{name:"Ivory",hex:"#EAE5D8"}, SAGE:{name:"Sage",hex:"#9AA093"}, NAVY:{name:"Navy",hex:"#2B3140"}, OLIVE:{name:"Olive",hex:"#5B6043"}, CHAR:{name:"Charcoal",hex:"#3A3833"} };
 const SIZES = ["S","M","L","XL","XXL"];
 let PID = 0;
@@ -481,7 +494,17 @@ const subtotal = ()=>cart.reduce((s,i)=>s+i.price*i.qty,0);
 const cartCount = ()=>cart.reduce((s,i)=>s+i.qty,0);
 function shippingFee(){ if(!cart.length) return 0; if(checkout.shipping==="express") return SETTINGS.expressFee; return subtotal()>=SETTINGS.freeShippingThreshold?0:200; }
 
-const garment = (type,hex)=>`<svg class="garment" style="color:${hex}" aria-hidden="true"><use href="#${type}"/></svg>`;
+const garment = (type,hex)=>`<svg class="garment" style="color:${hex}" aria-hidden="true"><use href="#${KNOWN_SHAPES.includes(type)?type:"tee"}"/></svg>`;
+function sizeGuide(p){
+  const cat = CATEGORIES.find(c=>c.name===p.category);
+  const sc = cat && cat.sizeChart;
+  if(!sc || !Array.isArray(sc.rows) || !sc.rows.length) return "";
+  const cols = Array.isArray(sc.columns)?sc.columns:[];
+  return `<details class="sizeguide"><summary>Size guide — measurements in inches</summary>
+    <table><thead><tr><th>Size</th>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead>
+    <tbody>${sc.rows.map(r=>`<tr><td>${r.size}</td>${cols.map((_,i)=>`<td>${(r.values&&r.values[i])||"—"}</td>`).join("")}</tr>`).join("")}</tbody></table>
+  </details>`;
+}
 
 /* ============ cart ops ============ */
 function addToCart(p,color,size,qty,originEl){
@@ -609,9 +632,7 @@ function viewHome(){
   <section class="section reveal">
     <div class="wrap"><div class="catsplit">
       <div class="catlist"><p class="eyebrow" style="margin-bottom:28px">Collections</p><ul>
-        <li><a data-link="shop:Polo Shirts">Polo Shirts <em>view →</em></a></li>
-        <li><a data-link="shop:T-Shirts">T-Shirts <em>view →</em></a></li>
-        <li><a data-link="shop:Trousers">Trousers <em>view →</em></a></li>
+        ${(CATEGORIES.length?CATEGORIES.map(c=>c.name):["Polo Shirts","T-Shirts","Trousers"]).map(n=>`<li><a data-link="shop:${n}">${n} <em>view →</em></a></li>`).join("")}
         <li><a data-link="shop">New Arrivals <em>just in →</em></a></li>
       </ul></div>
       <div class="catvisual"><svg class="garment" style="color:#B6AFA6"><use href="#tee"/></svg><span class="tagword">No logo — just fit</span></div>
@@ -640,7 +661,8 @@ function viewHome(){
 }
 
 function viewShop(arg){
-  const cats=["All","Polo Shirts","T-Shirts","Trousers"];
+  const names = CATEGORIES.length ? CATEGORIES.map(c=>c.name) : ["Polo Shirts","T-Shirts","Trousers"];
+  const cats=["All",...names];
   const active = cats.includes(arg)?arg:"All";
   return `
   <section class="band reveal"><div class="wrap">
@@ -681,6 +703,7 @@ function viewProduct(slug){
           <div class="specrow"><dt>Care</dt><dd>Pre-shrunk — machine wash cold</dd></div>
           <div class="specrow"><dt>Delivery</dt><dd>2–4 days · cash on delivery</dd></div>
         </dl>
+        ${sizeGuide(p)}
       </div>
     </div>
     ${related.length?`<section class="section" style="padding-top:30px"><div class="sec-head"><p class="eyebrow">You may also like</p><h2 class="display">More ${p.category}</h2></div>
@@ -1065,6 +1088,7 @@ async function boot(){
     const data=await fetch("/api/public?type=catalog").then(r=>r.json());
     if(data && Array.isArray(data.products) && data.products.length) PRODUCTS=data.products;
     if(data && data.settings) SETTINGS=Object.assign(SETTINGS,data.settings);
+    if(data && Array.isArray(data.categories)) CATEGORIES=data.categories;
   }catch(e){ /* API unreachable — fall back to built-in catalog so the site still works */ }
   $("#announce").textContent=SETTINGS.announcement;
   if(!location.hash) location.hash="#/";
