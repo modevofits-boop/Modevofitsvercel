@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- ▼▼ Before deploying: find-and-replace  YOURDOMAIN.com  with your real domain ▼▼ -->
+<title>SearchLens — SEO &amp; AI-Search (GEO/AEO) Audit Tool</title>
+<meta name="description" content="Free SEO, GEO &amp; AEO audit tool. Scan any page for classic SEO, technical health, and AI-search readiness — get a 0–100 score, evidence, and ready-to-paste fixes.">
+<link rel="canonical" href="https://YOURDOMAIN.com/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#5AB8F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0F15" media="(prefers-color-scheme: dark)">
+
+<!-- Favicon -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/favicon.svg">
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="SearchLens">
+<meta property="og:title" content="SearchLens — SEO & AI-Search (GEO/AEO) Audit Tool">
+<meta property="og:description" content="Scan any page for classic SEO, technical health, and AI-search (GEO/AEO) readiness — with a score, evidence, and ready-to-paste fixes.">
+<meta property="og:image" content="https://YOURDOMAIN.com/og-image.png">
+<meta property="og:url" content="https://YOURDOMAIN.com/">
+<meta property="og:type" content="website">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SearchLens — SEO & AI-Search (GEO/AEO) Audit Tool">
+<meta name="twitter:description" content="Scan any page for SEO, technical, and AI-search readiness — score, evidence, and ready-to-paste fixes.">
+<meta name="twitter:image" content="https://YOURDOMAIN.com/og-image.png">
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"WebApplication","name":"SearchLens","url":"https://YOURDOMAIN.com/","description":"Free SEO, GEO and AEO audit tool that scans a web page for classic SEO, technical health and AI-search readiness.","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}},
+{"@type":"Organization","name":"SearchLens","url":"https://YOURDOMAIN.com/","logo":"https://YOURDOMAIN.com/favicon.svg","sameAs":[]},
+{"@type":"WebSite","name":"SearchLens","url":"https://YOURDOMAIN.com/"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is SearchLens?","acceptedAnswer":{"@type":"Answer","text":"SearchLens is a free tool that audits any web page for classic SEO, technical health and AI-search (GEO/AEO) readiness, returning a 0–100 score with evidence and ready-to-paste fixes."}},
+{"@type":"Question","name":"What are GEO and AEO?","acceptedAnswer":{"@type":"Answer","text":"GEO (Generative Engine Optimization) and AEO (Answer Engine Optimization) are practices for getting your content cited by AI engines like ChatGPT, Perplexity and Google AI Overviews — checking AI-crawler access, llms.txt, answer-first content and structured data."}},
+{"@type":"Question","name":"Is SearchLens free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Scanning a page and viewing every check, its evidence and its fix is free."}}
+]}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E9F4FF; --surface:#FFFFFF; --surface-2:#D9ECFF; --raise:#CBE4FD;
+  --ink:#0D1117; --ink-soft:#465A73; --ink-faint:#7C8DA6; --line:#CBE3FB;
+  --blue:#5AB8F5; --blue-deep:#1287DE; --blue-soft:#E4F3FF;
+  --yellow:#FFCB2D; --yellow-deep:#F2B705; --yellow-soft:#FFF3C9;
+  --pass:#1E9E63; --pass-bg:#E3F6EC; --warn:#E6A50A; --warn-bg:#FFF4D6; --fail:#E64A34; --fail-bg:#FCE6E1;
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --r:20px; --r-md:14px; --r-sm:10px; --shadow:0 12px 40px -12px rgba(18,135,222,.28);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root[data-theme="dark"]{
+  --bg:#0C0F15; --surface:#151A23; --surface-2:#1D2531; --raise:#26303E;
+  --ink:#EAF2FB; --ink-soft:#93A4BC; --ink-faint:#61728C; --line:#26303E;
+  --blue:#6CC4FF; --blue-deep:#3EA6F2; --blue-soft:#122234;
+  --yellow:#FFD23F; --yellow-deep:#FFC21A; --yellow-soft:#2A2612;
+  --pass:#3ECB84; --pass-bg:#10281d; --warn:#FFC21A; --warn-bg:#2a2410; --fail:#FF7059; --fail-bg:#2c1712;
+  --shadow:0 16px 44px -14px rgba(0,0,0,.6);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C0F15; --surface:#151A23; --surface-2:#1D2531; --raise:#26303E;
+  --ink:#EAF2FB; --ink-soft:#93A4BC; --ink-faint:#61728C; --line:#26303E;
+  --blue:#6CC4FF; --blue-deep:#3EA6F2; --blue-soft:#122234;
+  --yellow:#FFD23F; --yellow-deep:#FFC21A; --yellow-soft:#2A2612;
+  --pass:#3ECB84; --pass-bg:#10281d; --warn:#FFC21A; --warn-bg:#2a2410; --fail:#FF7059; --fail-bg:#2c1712;
+  --shadow:0 16px 44px -14px rgba(0,0,0,.6);
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+a{color:var(--blue-deep);text-decoration:none}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
+.logo{width:34px;height:34px;border-radius:11px;background:var(--ink);position:relative;flex:none;overflow:hidden}
+.logo::before{content:"";position:absolute;inset:0;border-radius:50%;margin:9px;border:2.5px solid var(--blue)}
+.logo::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2.5px;background:var(--yellow);transform-origin:left;transform:translateY(-50%);border-radius:2px;animation:sweep 3s linear infinite}
+@keyframes sweep{to{transform:translateY(-50%) rotate(360deg)}}
+.nav-links{display:flex;align-items:center;gap:26px}
+.nav-links a{color:var(--ink-soft);font-weight:600;font-size:14.5px}
+.nav-links a:hover{color:var(--ink)}
+.tgl{background:var(--surface-2);border:1px solid var(--line);color:var(--ink-soft);width:40px;height:38px;border-radius:11px;cursor:pointer;font-size:16px}
+.btn{font-family:var(--sans);font-weight:700;font-size:15px;border-radius:12px;padding:13px 22px;cursor:pointer;border:2px solid transparent;transition:transform .12s ease,box-shadow .2s ease,filter .2s ease;display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-y{background:var(--yellow);color:#141414;box-shadow:0 6px 0 var(--yellow-deep)}
+.btn-y:hover{filter:brightness(1.03);box-shadow:0 8px 0 var(--yellow-deep);transform:translateY(-1px)}
+.btn-y:active{box-shadow:0 2px 0 var(--yellow-deep);transform:translateY(3px)}
+.btn-b{background:var(--blue-deep);color:#fff}
+.btn-b:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{background:var(--surface-2)}
+.nav .btn{padding:10px 18px}
+@media(max-width:720px){.nav-links a{display:none}}
+
+/* hero */
+.hero{position:relative;padding:70px 0 40px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+@media(max-width:840px){.hero-grid{grid-template-columns:1fr;gap:20px}.radar-wrap{order:-1;margin:0 auto}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--yellow-soft);color:var(--yellow-deep);font-weight:700;font-size:13px;padding:7px 14px;border-radius:99px;margin-bottom:20px}
+.eyebrow b{width:7px;height:7px;border-radius:50%;background:var(--yellow-deep);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+h1{font-size:clamp(34px,6vw,56px);font-weight:800;line-height:1.02;letter-spacing:-.035em;margin:0 0 18px}
+h1 .hl{background:var(--yellow);color:#141414;padding:0 .12em;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.lede{color:var(--ink-soft);font-size:18px;max-width:46ch;margin:0 0 28px}
+.hero .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.reveal-up>*{opacity:0;transform:translateY(16px);animation:up .7s cubic-bezier(.2,.7,.2,1) forwards}
+.reveal-up>*:nth-child(1){animation-delay:.05s}.reveal-up>*:nth-child(2){animation-delay:.15s}.reveal-up>*:nth-child(3){animation-delay:.25s}.reveal-up>*:nth-child(4){animation-delay:.35s}
+@keyframes up{to{opacity:1;transform:none}}
+
+/* radar */
+.radar-wrap{display:grid;place-items:center;position:relative;width:100%;max-width:320px}
+.radar{position:relative;width:280px;height:280px;max-width:78vw;max-height:78vw}
+.ring{position:absolute;inset:0;border:2px solid var(--line);border-radius:50%}
+.ring.r2{inset:34px}.ring.r3{inset:68px}.ring.r4{inset:102px}
+.radar .core{position:absolute;inset:0;margin:auto;width:14px;height:14px;background:var(--blue-deep);border-radius:50%;box-shadow:0 0 0 6px var(--blue-soft)}
+.beam{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,color-mix(in srgb,var(--yellow) 55%,transparent) 40deg,transparent 60deg);animation:spin 3.4s linear infinite;-webkit-mask:radial-gradient(circle,transparent 6px,#000 7px);mask:radial-gradient(circle,transparent 6px,#000 7px)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.blip{position:absolute;width:11px;height:11px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 4px var(--yellow-soft);animation:blip 3.4s ease-in-out infinite}
+.blip.b1{top:22%;left:64%}.blip.b2{top:60%;left:30%;animation-delay:1.1s}.blip.b3{top:70%;left:70%;animation-delay:2.2s}
+@keyframes blip{0%,70%,100%{transform:scale(.5);opacity:.3}80%{transform:scale(1.15);opacity:1}}
+.float{animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* generic section */
+section.blk{padding:56px 0}
+.kh{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.03em;margin:0 0 10px;text-align:center}
+.ksub{color:var(--ink-soft);text-align:center;max-width:52ch;margin:0 auto 36px}
+
+/* TOOL */
+#tool{scroll-margin-top:80px}
+.tool-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.tool-head{background:var(--ink);color:#fff;padding:18px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tool-head .dot3{display:flex;gap:6px}.tool-head .dot3 i{width:11px;height:11px;border-radius:50%}
+.tool-head .dot3 i:nth-child(1){background:var(--fail)}.tool-head .dot3 i:nth-child(2){background:var(--yellow)}.tool-head .dot3 i:nth-child(3){background:var(--pass)}
+.tool-head span{font-weight:700;font-size:14px}
+.tool-head .u{margin-left:auto;font-family:var(--mono);font-size:12.5px;color:#9fb4cc;background:#0000004d;padding:5px 12px;border-radius:8px}
+.pad{padding:22px}
+.tabs{display:flex;gap:4px;background:var(--surface-2);padding:5px;border-radius:12px;margin-bottom:14px;width:fit-content}
+.tab{padding:9px 18px;border:none;background:transparent;color:var(--ink-soft);font-weight:700;font-size:14px;border-radius:9px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+textarea,input[type=url]{width:100%;background:var(--bg);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:14px;font-family:var(--mono);font-size:13px;line-height:1.5}
+textarea{min-height:150px;resize:vertical}
+textarea:focus,input:focus{outline:none;border-color:var(--blue-deep)}
+.adv summary{cursor:pointer;color:var(--blue-deep);font-weight:700;font-size:14px;margin-top:14px}
+.adv textarea{min-height:76px;margin-top:10px}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.row .btn-y{flex:1;min-width:180px;justify-content:center}
+.hint{color:var(--ink-faint);font-size:13px;margin:12px 2px 0;display:flex;align-items:center;gap:7px}
+.note{background:var(--blue-soft);border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:13.5px;margin-top:12px}
+.note b{color:var(--blue-deep)}
+
+/* scan overlay */
+.scanning{position:relative;height:200px;display:grid;place-items:center;overflow:hidden}
+.scanline{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--yellow),transparent);box-shadow:0 0 20px 4px var(--yellow);animation:scanmove 1s ease-in-out infinite}
+@keyframes scanmove{0%{top:10%}50%{top:88%}100%{top:10%}}
+.scanning p{font-weight:700;color:var(--ink-soft);font-family:var(--mono);font-size:14px}
+
+/* results */
+#results{display:none;margin-top:26px}
+.score-wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.gauge{position:relative;width:140px;height:140px;flex:none}
+.gauge svg{transform:rotate(-90deg)}
+.gauge .num{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.gauge .num b{font-size:42px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.gauge .num span{font-size:12px;color:var(--ink-soft);font-weight:700}
+.cats{flex:1;min-width:240px;display:flex;flex-direction:column;gap:15px}
+.cat .cl{display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-bottom:6px}
+.cat .cl em{font-family:var(--mono);font-style:normal;color:var(--ink-soft);font-size:13px}
+.bar{height:9px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;width:0;transition:width 1s cubic-bezier(.2,.7,.2,1)}
+.tally{display:flex;gap:7px;margin-top:6px;flex-wrap:wrap}
+.pill{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;font-family:var(--mono)}
+.pill.p{background:var(--pass-bg);color:var(--pass)}.pill.w{background:var(--warn-bg);color:var(--warn)}.pill.f{background:var(--fail-bg);color:var(--fail)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 8px}
+.filt{background:var(--surface);border:1.5px solid var(--line);color:var(--ink-soft);border-radius:99px;padding:8px 15px;font-size:13px;font-weight:700;cursor:pointer}
+.filt[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grp{margin-top:20px}
+.grp h3{font-size:17px;font-weight:800;margin:0 0 12px;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
+.grp h3 .gd{width:11px;height:11px;border-radius:4px}
+.card{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:10px;opacity:0;transform:translateY(10px)}
+.card.in{opacity:1;transform:none;transition:opacity .4s,transform .4s}
+.card.s-pass{border-left-color:var(--pass)}.card.s-warn{border-left-color:var(--warn)}.card.s-fail{border-left-color:var(--fail)}
+.ct{display:flex;gap:12px}
+.dot{width:24px;height:24px;border-radius:8px;flex:none;display:grid;place-items:center;font-size:13px;font-weight:800;margin-top:1px}
+.s-pass .dot{background:var(--pass-bg);color:var(--pass)}.s-warn .dot{background:var(--warn-bg);color:var(--warn)}.s-fail .dot{background:var(--fail-bg);color:var(--fail)}
+.cbody{flex:1;min-width:0}
+.cname{font-weight:700;font-size:15px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.prio{font-size:10.5px;font-weight:800;font-family:var(--mono);padding:2px 8px;border-radius:6px;background:var(--surface-2);color:var(--ink-faint)}
+.prio.high{background:var(--fail-bg);color:var(--fail)}
+.ev{font-family:var(--mono);font-size:12px;color:var(--ink-soft);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:4px 9px;margin-top:9px;display:inline-block;max-width:100%;overflow-wrap:anywhere}
+.why{color:var(--ink-soft);font-size:13.5px;margin-top:9px}
+.fix{margin-top:9px}.fix summary{cursor:pointer;color:var(--blue-deep);font-size:13.5px;font-weight:700}
+.snip{position:relative;margin-top:9px}
+.snip pre{background:var(--ink);color:#e6edf3;border-radius:10px;padding:13px;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.5;margin:0}
+.copy{position:absolute;top:8px;right:8px;background:#ffffff22;border:1px solid #ffffff33;color:#fff;border-radius:7px;font-size:11px;font-weight:700;padding:4px 10px;cursor:pointer}
+.fixpack{background:linear-gradient(135deg,var(--blue-soft),var(--surface));border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-top:28px}
+.fixpack h3{font-size:19px;font-weight:800;margin:0 0 4px}.fixpack>p{color:var(--ink-soft);font-size:14px;margin:0 0 16px}
+.dl{display:flex;gap:10px;flex-wrap:wrap}
+
+/* feature cards */
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:780px){.feats{grid-template-columns:1fr}}
+.feat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:transform .25s ease,box-shadow .25s ease}
+.feat:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.feat .ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;font-size:24px;margin-bottom:16px}
+.feat.f1 .ic{background:var(--blue-soft);color:var(--blue-deep)}.feat.f2 .ic{background:var(--yellow-soft);color:var(--yellow-deep)}.feat.f3 .ic{background:var(--ink);color:var(--yellow)}
+.feat h4{font-size:18px;font-weight:800;margin:0 0 7px}.feat p{color:var(--ink-soft);font-size:14.5px;margin:0}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+@media(max-width:780px){.steps{grid-template-columns:1fr}}
+.step{position:relative;padding:26px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.step::before{counter-increment:s;content:counter(s);position:absolute;top:-16px;left:22px;width:38px;height:38px;background:var(--yellow);color:#141414;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:18px;box-shadow:0 4px 0 var(--yellow-deep)}
+.step h4{margin:14px 0 7px;font-size:17px;font-weight:800}.step p{color:var(--ink-soft);font-size:14.5px;margin:0}
+
+/* reveal on scroll */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.rv.show{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* CTA band */
+.ctaband{background:var(--ink);color:#fff;border-radius:var(--r);padding:44px;text-align:center;position:relative;overflow:hidden}
+.ctaband h3{font-size:clamp(24px,4vw,34px);font-weight:800;margin:0 0 10px;letter-spacing:-.02em}
+.ctaband h3 .hl{color:var(--yellow)}
+.ctaband p{color:#aebfd4;margin:0 0 22px}
+.ctaband .glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,var(--blue-deep),transparent 70%);opacity:.4;top:-140px;right:-80px}
+
+footer{padding:36px 0;color:var(--ink-faint);font-size:13.5px;text-align:center;border-top:1px solid var(--line);margin-top:20px}
+
+@media print{nav,.hero,.toolbar,.feats,.steps,.ctaband,footer,.tabs,.adv,.row,.copy,.dl,.fix summary,.tool-head{display:none!important}#results{display:block!important}body{background:#fff}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal-up>*,.rv,.card{opacity:1!important;transform:none!important}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav">
+  <div class="brand"><span class="logo"></span>SearchLens</div>
+  <div class="nav-links">
+    <a href="#tool">The tool</a><a href="#checks">What it checks</a><a href="#how">How it works</a>
+    <button class="tgl" id="theme" title="Theme">◐</button>
+    <a href="#tool" class="btn btn-y">Scan my page</a>
+  </div>
+</div></nav>
+
+<header class="hero"><div class="wrap hero-grid">
+  <div class="reveal-up">
+    <div class="eyebrow"><b></b>SEO · GEO · AEO in one scan</div>
+    <h1>Is your page ready for <span class="hl">Google &amp; AI</span> search?</h1>
+    <p class="lede">Paste your page. In one scan, SearchLens shows what's right, what's wrong, and the exact fix — for classic SEO, technical health, and how AI engines like ChatGPT read you.</p>
+    <div class="cta-row">
+      <a href="#tool" class="btn btn-y">Scan my page — free</a>
+      <a href="#how" class="btn btn-ghost">See how it works</a>
+    </div>
+  </div>
+  <div class="radar-wrap"><div class="radar float">
+    <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div>
+    <div class="beam"></div><div class="core"></div>
+    <div class="blip b1"></div><div class="blip b2"></div><div class="blip b3"></div>
+  </div></div>
+</div></header>
+
+<section class="blk" id="tool"><div class="wrap">
+  <h2 class="kh rv">Scan your page now</h2>
+  <p class="ksub rv d1">No sign-up. Everything runs in your browser — nothing is uploaded or stored.</p>
+  <div class="tool-card rv d2">
+    <div class="tool-head"><div class="dot3"><i></i><i></i><i></i></div><span>SearchLens Scanner</span><span class="u" id="u-label">paste HTML → run</span></div>
+    <div class="pad">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" id="tab-html">Paste HTML</button>
+        <button class="tab" role="tab" aria-selected="false" id="tab-url">Enter URL</button>
+      </div>
+      <div id="pane-html">
+        <textarea id="html" placeholder="Paste your page source — right-click your page → View Source → copy all → paste here."></textarea>
+        <details class="adv"><summary>Advanced — add robots.txt &amp; llms.txt (for AI-crawler &amp; llms checks)</summary>
+          <textarea id="robots" placeholder="Paste /robots.txt (optional)"></textarea>
+          <textarea id="llms" placeholder="Paste /llms.txt (optional)"></textarea>
+        </details>
+        <div class="row">
+          <button class="btn btn-y" id="run">Run audit</button>
+          <button class="btn btn-ghost" id="sample">Try a sample page</button>
+        </div>
+      </div>
+      <div id="pane-url" hidden>
+        <input id="url" type="url" placeholder="https://yoursite.com/page">
+        <div class="row"><button class="btn btn-y" id="run-url" style="flex:1;min-width:180px;justify-content:center">Scan URL</button></div>
+        <div class="hint">🔒 We fetch the page on our server (bypassing CORS), then scan it — including its robots.txt &amp; llms.txt automatically.</div>
+      </div>
+      <div id="results"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="blk" id="checks"><div class="wrap">
+  <h2 class="kh rv">What it checks</h2>
+  <p class="ksub rv d1">Three layers, one score — from the basics Google still cares about to the AI-search signals most tools miss.</p>
+  <div class="feats">
+    <div class="feat f1 rv"><div class="ic">🔎</div><h4>Classic SEO</h4><p>Title, meta, headings, alt text, canonical, Open Graph, mobile viewport — the on-page foundation, checked and explained.</p></div>
+    <div class="feat f2 rv d1"><div class="ic">⚙️</div><h4>Technical &amp; schema</h4><p>Structured data (JSON-LD), Organization/entity markup, and whether your core content lives in raw HTML for crawlers.</p></div>
+    <div class="feat f3 rv d2"><div class="ic">🤖</div><h4>GEO / AEO — AI search</h4><p>AI-crawler access, llms.txt, answer-first content, question headings, extractable data — so ChatGPT &amp; Perplexity can cite you.</p></div>
+  </div>
+</div></section>
+
+<section class="blk" id="how"><div class="wrap">
+  <h2 class="kh rv">How it works</h2>
+  <p class="ksub rv d1">Three steps. About thirty seconds.</p>
+  <div class="steps">
+    <div class="step rv"><h4>Paste your page</h4><p>Copy your page source (or hit "Try a sample") and drop it in the scanner.</p></div>
+    <div class="step rv d1"><h4>Get your score</h4><p>See a 0–100 score with every check marked pass, warn, or fail — plus the evidence behind each.</p></div>
+    <div class="step rv d2"><h4>Apply the fix</h4><p>Each issue comes with a ready-to-paste fix. Copy them, or download the report as PDF/CSV.</p></div>
+  </div>
+</div></section>
+
+<section class="blk"><div class="wrap">
+  <div class="ctaband rv"><div class="glow"></div>
+    <h3>Fix what's holding your page back — <span class="hl">free.</span></h3>
+    <p>One scan shows you exactly where you stand with Google and AI search.</p>
+    <a href="#tool" class="btn btn-y">Scan my page</a>
+  </div>
+</div></section>
+
+<footer class="wrap">SearchLens — SEO · GEO · AEO audit. Live-URL scanning via a serverless backend. AI-written fixes are the next layer.</footer>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const root=document.documentElement;
+$('#theme').onclick=()=>{const d=(root.getAttribute('data-theme')||'light')==='light';root.setAttribute('data-theme',d?'dark':'light');try{localStorage.setItem('sl',d?'dark':'light')}catch(e){}};
+try{const t=localStorage.getItem('sl');if(t)root.setAttribute('data-theme',t)}catch(e){}
+
+/* scroll reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}}),{threshold:.15});
+$$('.rv').forEach(el=>io.observe(el));
+
+/* tabs */
+function selTab(h){$('#tab-html').setAttribute('aria-selected',h);$('#tab-url').setAttribute('aria-selected',!h);$('#pane-html').hidden=!h;$('#pane-url').hidden=h}
+$('#tab-html').onclick=()=>selTab(true);$('#tab-url').onclick=()=>selTab(false);
+
+/* ===== audit engine ===== */
+const AI_BOTS={training:['GPTBot','CCBot','Google-Extended','Applebot-Extended','ClaudeBot','Bytespider','Amazonbot','Meta-ExternalAgent'],retrieval:['OAI-SearchBot','ChatGPT-User','PerplexityBot','Perplexity-User','Claude-SearchBot','Claude-User']};
+const CAT={onpage:'On-Page SEO',tech:'Technical & Schema',geo:'GEO / AEO / AI-Search'};
+const R=(id,cat,name,status,evidence,why,prio,fix)=>({id,cat,name,status,evidence,why,prio:prio||'Low',fix:fix||''});
+const snip=c=>({code:c});
+
+function audit(html,robots,llms){
+  const doc=new DOMParser().parseFromString(html,'text/html');const txt=(doc.body?.innerText||'').trim();const o=[];
+  const title=doc.querySelector('title')?.textContent.trim()||'';
+  o.push(R('title','onpage','Title tag',!title?'fail':(title.length>=30&&title.length<=60?'pass':'warn'),title?`"${title.slice(0,70)}" — ${title.length} chars`:'No <title>','Your strongest on-page signal and the clickable line in results. Aim for 30–60 characters.','High',(!title||title.length>60||title.length<30)?snip('<title>'+(title.length>60?title.slice(0,57).replace(/\s\S*$/,'')+'…':(title||'Primary keyword — Brand'))+'</title>'):''));
+  const md=doc.querySelector('meta[name="description"]')?.getAttribute('content')?.trim()||'';
+  o.push(R('meta','onpage','Meta description',!md?'warn':(md.length>=120&&md.length<=160?'pass':'warn'),md?`${md.length} chars`:'None','Drives click-through from results. Aim for 120–160 characters.','Medium',(!md||md.length<120||md.length>160)?snip('<meta name="description" content="Write a compelling 120–160 char summary.">'):''));
+  const h1=$$('h1',doc);o.push(R('h1','onpage','H1 heading',h1.length===1?'pass':(h1.length===0?'fail':'warn'),h1.length===0?'No H1':(h1.length===1?`"${h1[0].textContent.trim().slice(0,60)}"`:`${h1.length} H1s`),'Exactly one clear H1 per page.','High'));
+  const hs=$$('h1,h2,h3,h4,h5,h6',doc).map(h=>+h.tagName[1]);let sk=false;for(let i=1;i<hs.length;i++)if(hs[i]-hs[i-1]>1)sk=true;
+  o.push(R('hier','onpage','Heading hierarchy',hs.length?(sk?'warn':'pass'):'warn',hs.length?`${hs.length} headings`:'None',sk?'A level is skipped (e.g. H2→H4). Keep it sequential.':'Sequential outline.','Low'));
+  const im=$$('img',doc),na=im.filter(i=>!i.getAttribute('alt')?.trim());
+  o.push(R('alt','onpage','Image alt text',im.length===0?'pass':(na.length===0?'pass':(na.length/im.length>.4?'fail':'warn')),im.length?`${im.length-na.length}/${im.length} have alt`:'No images','Alt text aids accessibility, image search & AI context.','Medium'));
+  const cn=doc.querySelector('link[rel="canonical"]')?.getAttribute('href');o.push(R('canon','onpage','Canonical tag',cn?'pass':'warn',cn||'None','Sets the preferred URL; prevents duplicate dilution.','Medium',cn?'':snip('<link rel="canonical" href="https://site.com/page">')));
+  const og=['og:title','og:description','og:image'].filter(p=>doc.querySelector(`meta[property="${p}"]`));o.push(R('og','onpage','Open Graph tags',og.length===3?'pass':'warn',`${og.length}/3 core tags`,'Controls share previews & feeds AI/social cards.','Low',og.length<3?snip('<meta property="og:title" content="...">\n<meta property="og:description" content="...">\n<meta property="og:image" content="https://.../img.jpg">'):''));
+  o.push(R('vp','onpage','Mobile viewport',doc.querySelector('meta[name="viewport"]')?'pass':'fail',doc.querySelector('meta[name="viewport"]')?'present':'Missing','Without it the page isn\'t mobile-friendly — a core ranking factor.','High',doc.querySelector('meta[name="viewport"]')?'':snip('<meta name="viewport" content="width=device-width, initial-scale=1">')));
+  o.push(R('lang','onpage','Language declaration',doc.documentElement.getAttribute('lang')?'pass':'warn',doc.documentElement.getAttribute('lang')?`lang="${doc.documentElement.getAttribute('lang')}"`:'None','Helps search & assistive tech read the page.','Low',doc.documentElement.getAttribute('lang')?'':snip('<html lang="en">')));
+
+  const ld=$$('script[type="application/ld+json"]',doc);let ty=[],bad=0;ld.forEach(s=>{try{const j=JSON.parse(s.textContent);(Array.isArray(j)?j:[j]).forEach(x=>{if(x['@type'])ty=ty.concat(x['@type'])})}catch(e){bad++}});
+  const org=()=>JSON.stringify({"@context":"https://schema.org","@type":"Organization",name:(doc.querySelector('title')?.textContent.split(/[|\-–]/).pop().trim()||'Your Brand'),url:"https://site.com",logo:"https://site.com/logo.png",sameAs:["https://linkedin.com/company/…","https://x.com/…"]},null,2);
+  o.push(R('ld','tech','Structured data (JSON-LD)',ld.length===0?'warn':(bad?'fail':'pass'),ld.length?(bad?`${bad} invalid block(s)`:`${ty.length} type(s): ${ty.join(', ')}`):'None','Earns rich results & gives AI facts to cite.','Medium',ld.length===0?snip(org()):''));
+  const hasOrg=ty.some(t=>/Organization|LocalBusiness|WebSite/.test(t));o.push(R('org','tech','Organization / entity schema',hasOrg?'pass':'warn',hasOrg?'Present':'None','sameAs links make your brand a resolvable entity — key for AI citation.','Medium',hasOrg?'':snip(org())));
+  o.push(R('nojs','tech','Content in raw HTML',txt.length>350?'pass':'warn',`${txt.length} chars of text`,'Many AI crawlers don\'t run JS — core content should be in the server HTML.','Medium'));
+
+  if(robots&&robots.trim()){const rf=parseRobots(robots);const bR=AI_BOTS.retrieval.filter(b=>rf(b)==='block'),bT=AI_BOTS.training.filter(b=>rf(b)==='block');
+    o.push(R('ai','geo','AI crawler access',bR.length?'fail':(bT.length?'warn':'pass'),bR.length?`Retrieval bots BLOCKED: ${bR.join(', ')}`:(bT.length?`Training bots blocked: ${bT.join(', ')}`:'All AI crawlers allowed'),bR.length?'You\'re blocking search/citation bots — this removes you from ChatGPT/Perplexity answers. Allow retrieval bots even if you block training bots.':'Retrieval bots can reach you (good).','High',bR.length?snip(robotsFix()):''));
+  }else o.push(R('ai','geo','AI crawler access','warn','robots.txt not provided','Add robots.txt (Advanced) to check GPTBot, PerplexityBot, ClaudeBot access. Recommended block below.','High',snip(robotsFix())));
+
+  o.push(R('llms','geo','llms.txt',(llms&&llms.trim())?(/^#\s/.test(llms.trim())?'pass':'warn'):'warn',(llms&&llms.trim())?'Provided':'None','Gives AI a clean map of your key content. Starter generated below.','Medium',(llms&&llms.trim())?'':snip(llmsFix(doc))));
+  const fp=[...doc.querySelectorAll('h1,h2')].map(h=>{let n=h.nextElementSibling;while(n&&!/^P$/i.test(n.tagName))n=n.nextElementSibling;return n?.textContent.trim()||''}).find(Boolean)||'';const w=fp.split(/\s+/).filter(Boolean).length;
+  o.push(R('ans','geo','Answer-first content',fp&&w>=15&&w<=90?'pass':'warn',fp?`First paragraph: ${w} words`:'No intro paragraph','AI lifts concise self-contained answers. Lead a section with a 40–60 word answer.','Medium'));
+  const qh=$$('h2,h3',doc).filter(h=>/\?$|^(how|what|why|when|where|which|who|can|do|is|are)\b/i.test(h.textContent.trim()));o.push(R('qh','geo','Question-style headings',qh.length?'pass':'warn',`${qh.length} found`,'Question headings match how people query AI.','Low'));
+  const ex=$$('table,ul,ol,dl',doc).length;o.push(R('ex','geo','Extractable content',ex>=2?'pass':'warn',`${ex} list/table block(s)`,'Tables, lists & definitions are what AI extracts most.','Low'));
+  o.push(R('faq','geo','FAQ / Q&A schema',ty.some(t=>/FAQPage|QAPage/.test(t))?'pass':'warn',ty.some(t=>/FAQPage|QAPage/.test(t))?'Present':'None','Turns Q&As into rich results & citable answers.','Low',ty.some(t=>/FAQPage|QAPage/.test(t))?'':snip(JSON.stringify({"@context":"https://schema.org","@type":"FAQPage",mainEntity:[{"@type":"Question",name:"Your question?",acceptedAnswer:{"@type":"Answer",text:"A concise answer."}}]},null,2))));
+  const hd=!!doc.querySelector('time,[datetime]')||/"date(Published|Modified)"/.test(html);o.push(R('fresh','geo','Freshness signals',hd?'pass':'warn',hd?'Date markup found':'None','Dates help AI judge recency — vital for fast-moving topics.','Low'));
+  return o;
+}
+function llmsFix(doc){const n=doc.querySelector('title')?.textContent.split(/[|\-–]/)[0].trim()||'Your Site';return `# ${n}\n\n> One-line summary of what this site is and who it's for.\n\n## Core pages\n- [Home](https://site.com): what it covers\n- [Docs](https://site.com/docs): key reference`}
+function robotsFix(){return `# Allow AI search / citation bots\nUser-agent: OAI-SearchBot\nUser-agent: ChatGPT-User\nUser-agent: PerplexityBot\nUser-agent: Claude-SearchBot\nUser-agent: Google-Extended\nAllow: /\n\nSitemap: https://site.com/sitemap.xml`}
+function parseRobots(t){const L=t.split(/\r?\n/).map(l=>l.replace(/#.*/,'').trim());const g=[];let c=null;
+  L.forEach(l=>{const m=l.match(/^user-agent:\s*(.+)$/i);if(m){if(!c||c.rules.length){c={a:[],rules:[]};g.push(c)}c.a.push(m[1].trim())}else if(c){const d=l.match(/^(allow|disallow):\s*(.*)$/i);if(d)c.rules.push([d[1].toLowerCase(),d[2].trim()])}});
+  return b=>{let x=g.find(z=>z.a.some(a=>a.toLowerCase()===b.toLowerCase()))||g.find(z=>z.a.includes('*'));if(!x)return'allow';const dis=x.rules.some(([t,p])=>t==='disallow'&&p==='/'),al=x.rules.some(([t,p])=>t==='allow'&&p==='/');return dis&&!al?'block':'allow'}}
+
+/* scoring */
+const W={High:3,Medium:2,Low:1},V={pass:1,warn:.5,fail:0};
+function score(l){const by={};['onpage','tech','geo'].forEach(c=>by[c]={g:0,m:0,p:0,w:0,f:0});l.forEach(r=>{by[r.cat].g+=W[r.prio]*V[r.status];by[r.cat].m+=W[r.prio];by[r.cat][r.status[0]]++});const cat={};let G=0,M=0;for(const c in by){cat[c]=by[c].m?Math.round(by[c].g/by[c].m*100):100;G+=by[c].g;M+=by[c].m}return{overall:M?Math.round(G/M*100):100,cat,by}}
+const band=v=>v>=80?'var(--pass)':v>=55?'var(--warn)':'var(--fail)';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* render */
+let LAST=[];
+function render(l){
+  LAST=l;const sc=score(l);const RES=$('#results');const ic={pass:'✓',warn:'!',fail:'✕'};
+  const C=2*Math.PI*58;
+  const cats=['onpage','tech','geo'].map(c=>{const b=sc.by[c];return `<div class="cat"><div class="cl"><span>${CAT[c]}</span><em class="cval" data-c="${c}">0</em></div><div class="bar"><i data-c="${c}" style="background:${band(sc.cat[c])}"></i></div><div class="tally">${b.p?`<span class="pill p">${b.p} pass</span>`:''}${b.w?`<span class="pill w">${b.w} warn</span>`:''}${b.f?`<span class="pill f">${b.f} fail</span>`:''}</div></div>`}).join('');
+  const groups=['onpage','tech','geo'].map(c=>`<div class="grp" data-cat="${c}"><h3><span class="gd" style="background:${band(sc.cat[c])}"></span>${CAT[c]}</h3>${l.filter(r=>r.cat===c).map(card).join('')}</div>`).join('');
+  RES.innerHTML=`<div class="score-wrap"><div class="gauge"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="58" fill="none" stroke="var(--surface-2)" stroke-width="12"/><circle id="arc" cx="70" cy="70" r="58" fill="none" stroke="${band(sc.overall)}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg><div class="num"><b id="gnum">0</b><span>/ 100</span></div></div><div class="cats">${cats}</div></div>
+  <div class="toolbar"><button class="filt" data-f="all" aria-pressed="true">All ${l.length}</button><button class="filt" data-f="fail" aria-pressed="false">Failed ${l.filter(r=>r.status==='fail').length}</button><button class="filt" data-f="warn" aria-pressed="false">Warnings ${l.filter(r=>r.status==='warn').length}</button><button class="filt" data-f="pass" aria-pressed="false">Passed ${l.filter(r=>r.status==='pass').length}</button></div>
+  ${groups}
+  <div class="fixpack"><h3>Fix Pack</h3><p>Every generated fix in one place — copy them or export the report.</p><div class="dl"><button class="btn btn-ghost" id="dl-pdf">Download PDF</button><button class="btn btn-ghost" id="dl-csv">Export CSV</button><button class="btn btn-ghost" id="dl-copy">Copy all fixes</button></div><div class="note" style="margin-top:14px"><b>Next layer —</b> AI-written, page-specific fixes plug in here as the paid/BYOK feature; the checks above stay free.</div></div>`;
+  RES.style.display='block';
+  animate(sc,C);wire();
+  setTimeout(()=>$$('#results .card').forEach((c,i)=>setTimeout(()=>c.classList.add('in'),i*45)),260);
+}
+function card(r){const ic={pass:'✓',warn:'!',fail:'✕'}[r.status];const ev=r.evidence?`<div class="ev">${esc(r.evidence)}</div>`:'';
+  const fix=r.fix?(r.fix.code?`<details class="fix"><summary>Show fix</summary><div class="snip"><button class="copy">Copy</button><pre>${esc(r.fix.code)}</pre></div></details>`:`<details class="fix"><summary>Show fix</summary><div style="margin-top:8px;font-size:13.5px">${esc(r.fix)}</div></details>`):'';
+  return `<div class="card s-${r.status}" data-status="${r.status}"><div class="ct"><div class="dot">${ic}</div><div class="cbody"><div class="cname">${esc(r.name)} <span class="prio ${r.prio==='High'?'high':''}">${r.prio}</span></div>${ev}<div class="why">${esc(r.why)}</div>${fix}</div></div></div>`}
+function animate(sc,C){
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;const arc=$('#arc'),gn=$('#gnum');
+  if(reduce){arc.style.strokeDashoffset=C*(1-sc.overall/100);gn.textContent=sc.overall;$$('.bar i').forEach(b=>b.style.width=sc.cat[b.dataset.c]+'%');$$('.cval').forEach(e=>e.textContent=sc.cat[e.dataset.c]);return}
+  requestAnimationFrame(()=>{arc.style.transition='stroke-dashoffset 1.1s cubic-bezier(.2,.7,.2,1)';arc.style.strokeDashoffset=C*(1-sc.overall/100);$$('.bar i').forEach(b=>b.style.width=sc.cat[b.dataset.c]+'%')});
+  const t0=performance.now(),dur=1100;
+  (function tick(t){const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);gn.textContent=Math.round(sc.overall*e);$$('.cval').forEach(el=>el.textContent=Math.round(sc.cat[el.dataset.c]*e));if(k<1)requestAnimationFrame(tick)})(t0);
+}
+function wire(){
+  $$('.copy').forEach(b=>b.onclick=()=>{navigator.clipboard?.writeText(b.parentElement.querySelector('pre').textContent);b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1200)});
+  $$('.filt').forEach(b=>b.onclick=()=>{$$('.filt').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');const f=b.dataset.f;$$('#results .card').forEach(c=>c.style.display=(f==='all'||c.dataset.status===f)?'':'none');$$('#results .grp').forEach(g=>{g.style.display=[...g.querySelectorAll('.card')].some(c=>c.style.display!=='none')?'':'none'})});
+  $('#dl-pdf').onclick=()=>window.print();
+  $('#dl-csv').onclick=()=>{const rows=[['Check','Category','Status','Evidence','Priority','Why']].concat(LAST.map(r=>[r.name,CAT[r.cat],r.status,r.evidence,r.prio,r.why]));const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='searchlens-audit.csv';a.click()};
+  $('#dl-copy').onclick=()=>{const t=LAST.filter(r=>r.fix&&r.fix.code).map(r=>`### ${r.name}\n${r.fix.code}`).join('\n\n');navigator.clipboard?.writeText(t);const b=$('#dl-copy');b.textContent='Copied all fixes';setTimeout(()=>b.textContent='Copy all fixes',1400)};
+}
+
+/* run with scan animation */
+function scanThen(html,robots,llms){
+  const RES=$('#results');RES.style.display='block';
+  RES.innerHTML=`<div class="scanning"><div class="scanline"></div><p>Scanning your page…</p></div>`;
+  $('#u-label').textContent='scanning…';
+  const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  setTimeout(()=>{$('#u-label').textContent='done';render(audit(html,robots,llms))},reduce?0:900);
+}
+$('#run').onclick=()=>{const h=$('#html').value.trim();if(!h){$('#html').style.borderColor='var(--fail)';$('#html').focus();setTimeout(()=>$('#html').style.borderColor='',900);return}scanThen(h,$('#robots').value,$('#llms').value)};
+$('#sample').onclick=()=>{$('#html').value=SAMPLE;$('#robots').value=SAMPLE_ROBOTS;selTab(true);scanThen(SAMPLE,SAMPLE_ROBOTS,'')};
+
+/* URL scan via backend (/api/scan) */
+$('#run-url').onclick=async()=>{
+  const u=$('#url').value.trim();
+  if(!u){$('#url').style.borderColor='var(--fail)';$('#url').focus();setTimeout(()=>$('#url').style.borderColor='',900);return}
+  const RES=$('#results');RES.style.display='block';RES.scrollIntoView({behavior:'smooth',block:'nearest'});
+  RES.innerHTML=`<div class="scanning"><div class="scanline"></div><p>Fetching &amp; scanning your page…</p></div>`;
+  $('#u-label').textContent='fetching…';
+  try{
+    const r=await fetch('/api/scan?url='+encodeURIComponent(u));
+    const d=await r.json();
+    if(!r.ok||d.error)throw new Error(d.error||('HTTP '+r.status));
+    $('#u-label').textContent=(d.status||200)+' · scanned';
+    render(audit(d.html||'',d.robots||'',d.llms||''));
+  }catch(e){
+    $('#u-label').textContent='error';
+    RES.innerHTML=`<div class="note" style="margin-top:0"><b>Couldn't scan that URL.</b> ${esc(e.message)}. Make sure it's a public https page — or switch to <b>Paste HTML</b>.</div>`;
+  }
+};
+
+const SAMPLE=`<!DOCTYPE html><html>
+<head>
+<title>Best Running Shoes 2026 — Our Complete Buyer's Guide to Trail and Road Running Footwear This Year</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="https://example.com/running-shoes">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Best Running Shoes 2026"}<\/script>
+</head>
+<body>
+<h1>Best Running Shoes of 2026</h1>
+<h3>How we tested</h3>
+<p>We ran 400 miles across twelve models. Short answer: for most road runners the best all-round pick this year is a lightweight daily trainer with a firm midsole and a wide toe box.</p>
+<h2>Top picks</h2>
+<ul><li>Model A</li><li>Model B</li></ul>
+<img src="a.jpg"><img src="b.jpg" alt="Model B side profile">
+</body></html>`;
+const SAMPLE_ROBOTS=`User-agent: *\nAllow: /\n\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: PerplexityBot\nDisallow: /`;
+</script>
+</body>
+</html>
